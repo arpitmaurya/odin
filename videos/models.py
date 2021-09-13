@@ -1,6 +1,6 @@
 from django.db import models
 from user_channels.models import Playlist
-from autoslug import AutoSlugField
+
 from django.shortcuts import reverse
 import uuid
 

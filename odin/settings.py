@@ -43,12 +43,10 @@ INSTALLED_APPS = [
     'user',
     'follow',
     'notification',
-    'main',
     'posts',
     'blogs',
     'articles',
     'videos',
-    'features',
     'user_channels',
 ]
 
