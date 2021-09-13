@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block content %}
+    <section>
+        <div class="gap gray-bg">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="row" id="page-contents">
+                        {% include 'includes/sidebar3.html' %}
+                        <div class="col-lg-10">
+                                    {% for video in videos %}
+                                        <div class="central-meta item">
+                                            <div class="user-post">
+                                                <div class="friend-info">
+                                                    <figure>
+                                                        {% if video.playlist.channel.channel_name %}
+                                                            <img src="{{ video.playlist.channel.channel_name }}" alt="">
+                                                        {% else %}
+                                                            <img src="{% static 'images/default.jpg' %}" alt="">
+                                                        {% endif %}
+                                                    </figure>
+                                                    <div class="friend-name">
+                                                        <ins>{{ video.playlist.channel.channel_name }} <button class="uk-align-right btn btn-danger">SUBSCRIBE</button></ins>
+                                                    </div>
+                                                    <div class="post-meta">
+                                                        <div class="we-video-info">
+                                                            <ul>
+                                                                <li>
+                                                                    <span class="comment" data-toggle="tooltip" title="Comments">
+                                                                        <i class="fa fa-comments-o"></i>
+                                                                        <ins>{{ video.views }}</ins>
+                                                                    </span>
+                                                                </li>
+                                                                <li class="social-media">
+                                                                    <div class="menu">
+                                                                        <div class="btn trigger"><i class="fa fa-share-alt"></i></div>
+                                                                        <div class="rotater">
+                                                                            <div class="btn btn-icon"><a href="#" title=""><i class="fa fa-html5"></i></a></div>
+                                                                        </div>
+                                                                        <div class="rotater">
+                                                                            <div class="btn btn-icon"><a href="#" title=""><i class="fa fa-facebook"></i></a></div>
+                                                                        </div>
+                                                                        <div class="rotater">
+                                                                            <div class="btn btn-icon"><a href="#" title=""><i class="fa fa-google-plus"></i></a></div>
+                                                                        </div>
+                                                                        <div class="rotater">
+                                                                            <div class="btn btn-icon"><a href="#" title=""><i class="fa fa-twitter"></i></a></div>
+                                                                        </div>
+                                                                        <div class="rotater">
+                                                                            <div class="btn btn-icon"><a href="#" title=""><i class="fa fa-css3"></i></a></div>
+                                                                        </div>
+                                                                        <div class="rotater">
+                                                                            <div class="btn btn-icon"><a href="#" title=""><i class="fa fa-instagram"></i></a>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="rotater">
+                                                                            <div class="btn btn-icon"><a href="#" title=""><i class="fa fa-dribbble"></i></a>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="rotater">
+                                                                            <div class="btn btn-icon"><a href="#" title=""><i class="fa fa-pinterest"></i></a>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                        <div class="description">
+                                                            <a style="color: rgba(255, 255, 255, 0.5) !important;" href="{% url 'videos:video-detail' video.uuid %}">
+                                                                <p class="mb-4">
+                                                                    {{ video.description}}
+                                                                </p>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock content %}

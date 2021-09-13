@@ -1,0 +1,24 @@
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="{% static 'css/channel/form-style.css' %}" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <div class="card">
+        <div class="content">
+            <form method="POST" action="{% url 'user_channels:home' %}">
+                {% csrf_token %}
+                <h2>odin</h2>
+                <h3>card1</h3>
+                <p>Lorem ipsum shit....</p>
+                {{ form.as_p }}
+                <button type="submit">Create</button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

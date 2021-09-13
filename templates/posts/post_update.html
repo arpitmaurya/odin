@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="newpst-input  uk-align-center">
+    <form method="post">
+        {% csrf_token %}
+        <div id="contact-form">
+            <textarea name="content" placeholder="Write something"></textarea>
+        </div>
+        <div class="attachments">
+            <ul>
+                <li>
+                    <button class="btn" type="submit">Post</button>
+                </li>
+            </ul>
+        </div>
+    </form>
+</div>
+{% endblock content %}

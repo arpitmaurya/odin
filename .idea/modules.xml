@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/../Codingwithmitch-Chat-master/.idea/Codingwithmitch-Chat-master.iml" filepath="$PROJECT_DIR$/../Codingwithmitch-Chat-master/.idea/Codingwithmitch-Chat-master.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../DEMO_VERSION/.idea/DEMO_VERSION.iml" filepath="$PROJECT_DIR$/../DEMO_VERSION/.idea/DEMO_VERSION.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../Django-Twitter-Clone-master/.idea/Django-Twitter-Clone-master.iml" filepath="$PROJECT_DIR$/../Django-Twitter-Clone-master/.idea/Django-Twitter-Clone-master.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../django-social-network-master/.idea/django-social-network-master.iml" filepath="$PROJECT_DIR$/../django-social-network-master/.idea/django-social-network-master.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../mediacms-main/.idea/mediacms-main.iml" filepath="$PROJECT_DIR$/../mediacms-main/.idea/mediacms-main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/odin.iml" filepath="$PROJECT_DIR$/.idea/odin.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../osiris/.idea/osiris.iml" filepath="$PROJECT_DIR$/../osiris/.idea/osiris.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../petsygram-master/.idea/petsygram-master.iml" filepath="$PROJECT_DIR$/../petsygram-master/.idea/petsygram-master.iml" />
+    </modules>
+  </component>
+</project>

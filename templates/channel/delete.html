@@ -1,0 +1,4 @@
+<form method="POST" action="{% url 'user_channels:delete' channel.uuid %}">
+    {% csrf_token %}
+    <button class="btn btm-danger" type="submit">Delete</button>
+</form>

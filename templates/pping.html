@@ -1,0 +1,181 @@
+<div id="modal-example" uk-modal>
+    <div class="uk-modal-dialog">
+        <form>
+            {% csrf_token %}
+            <h5>Video Title <span class="required">*</span></h5>
+          <div class="item">
+            <input type="text" name="name" placeholder=""/>
+          </div>
+            <div class="uk-align-right">
+              <h5>Video licence <span class="required">*</span></h5>
+              <div class="question">
+                <div class="question-answer">
+                  <input type="radio" value="none" id="radio_1" name="investigator" required/>
+                  <label for="radio_1" class="radio"><span>U</span></label>
+                  <input type="radio" value="none" id="radio_2" name="investigator" required/>
+                  <label for="radio_2" class="radio"><span>U/A</span></label>
+                  <input type="radio" value="none" id="radio_3" name="investigator" required/>
+                  <label for="radio_3" class="radio"><span>A</span></label>
+                  <input type="radio" value="none" id="radio_4" name="investigator" required/>
+                  <label for="radio_4" class="radio"><span>XXX</span></label>
+                </div>
+              </div>
+              <h5>Description</h5>
+              <div class="item">
+                <p>Add a video description (optional)</p>
+                <textarea name="description" rows="8" spellcheck="true"></textarea>
+              </div>
+
+            </div>
+            <div class="uk-align-center">
+                <div class="drop-zone">
+                    <span class="drop-zone__prompt">Upload Video</span>
+                    <input type="file" name="video" class="drop-zone__input">
+                </div>
+                <br>
+                <div class="drop-zone">
+                    <span class="drop-zone__prompt">Upload thumbnail</span>
+                    <input type="file" name="thumbnail" class="drop-zone__input">
+                </div>
+            </div>
+            <br>
+                <div class="btn-block">
+                  <button type="submit" href="/">UPLOAD</button>
+                </div>
+        </form>
+    </div>
+</div>
+
+
+<script>
+      document.querySelectorAll(".drop-zone__input").forEach((inputElement) => {
+          const dropZoneElement = inputElement.closest(".drop-zone");
+
+          dropZoneElement.addEventListener("click", (e) => {
+            inputElement.click();
+          });
+
+          inputElement.addEventListener("change", (e) => {
+            if (inputElement.files.length) {
+              updateThumbnail(dropZoneElement, inputElement.files[0]);
+            }
+          });
+
+          dropZoneElement.addEventListener("dragover", (e) => {
+            e.preventDefault();
+            dropZoneElement.classList.add("drop-zone--over");
+          });
+
+          ["dragleave", "dragend"].forEach((type) => {
+            dropZoneElement.addEventListener(type, (e) => {
+              dropZoneElement.classList.remove("drop-zone--over");
+            });
+          });
+
+          dropZoneElement.addEventListener("drop", (e) => {
+            e.preventDefault();
+
+            if (e.dataTransfer.files.length) {
+              inputElement.files = e.dataTransfer.files;
+              updateThumbnail(dropZoneElement, e.dataTransfer.files[0]);
+            }
+
+            dropZoneElement.classList.remove("drop-zone--over");
+          });
+      });
+
+        /**
+         * Updates the thumbnail on a drop zone element.
+         *
+         * @param {HTMLElement} dropZoneElement
+         * @param {File} file
+         */
+        function updateThumbnail(dropZoneElement, file) {
+          let thumbnailElement = dropZoneElement.querySelector(".drop-zone__thumb");
+
+          // First time - remove the prompt
+          if (dropZoneElement.querySelector(".drop-zone__prompt")) {
+            dropZoneElement.querySelector(".drop-zone__prompt").remove();
+          }
+
+          // First time - there is no thumbnail element, so lets create it
+          if (!thumbnailElement) {
+            thumbnailElement = document.createElement("div");
+            thumbnailElement.classList.add("drop-zone__thumb");
+            dropZoneElement.appendChild(thumbnailElement);
+          }
+
+          thumbnailElement.dataset.label = file.name;
+
+          // Show thumbnail for image files
+          if (file.type.startsWith("image/")) {
+            const reader = new FileReader();
+
+            reader.readAsDataURL(file);
+            reader.onload = () => {
+              thumbnailElement.style.backgroundImage = `url('${reader.result}')`;
+            };
+          } else {
+            thumbnailElement.style.backgroundImage = null;
+          }
+        }
+
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

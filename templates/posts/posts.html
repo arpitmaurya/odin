@@ -1,0 +1,161 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block content %}
+
+    <section>
+        <div class="gap gray-bg">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="row" id="page-contents">
+                            {% include 'includes/sidebar.html' %}
+                            <div class="col-lg-6">
+                                <div class="central-meta">
+                                    <div class="new-postbox">
+                                        <figure>
+                                            <img src="{{ request.user.photo.url }}" alt="">
+                                        </figure>
+                                            <div class="newpst-input">
+                                                <form method="post" action="{% url 'main:home' %}" enctype="multipart/form-data">
+                                                    {% csrf_token %}
+                                                    <textarea rows="2" name="body" placeholder="Write something"></textarea>
+                                                    <div class="attachments">
+                                                        <ul>
+                                                            <li>
+                                                                <i class="fa fa-music"></i>
+                                                                <label class="fileContainer">
+                                                                    <input type="file">
+                                                                </label>
+                                                            </li>
+                                                            <li>
+                                                                <i class="fa fa-image"></i>
+                                                                <label class="fileContainer">
+                                                                    <input type="file">
+                                                                </label>
+                                                            </li>
+                                                            <li>
+                                                                <i class="fa fa-video-camera"></i>
+                                                                <label class="fileContainer">
+                                                                    <input type="file">
+                                                                </label>
+                                                            </li>
+                                                            <li>
+                                                                <i class="fa fa-camera"></i>
+                                                                <label class="fileContainer">
+                                                                    <input type="file">
+                                                                </label>
+                                                            </li>
+                                                            <li>
+                                                                <button type="submit">Post</button>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </form>
+                                        </div>
+                                    </div>
+                                </div><!-- add post new box -->
+                                <div class="loadMore">
+                                    {% for post in posts %}
+                                        <div class="central-meta item">
+                                            <div class="user-post">
+                                                <div class="friend-info">
+                                                    <figure>
+                                                        {% if post.user.photo.url %}
+                                                            <img src="{{ post.user.photo.url }}" alt="">
+                                                        {% else %}
+                                                            <img src="{% static 'images/default.jpg' %}" alt="">
+                                                        {% endif %}
+                                                    </figure>
+                                                    <div class="friend-name">
+                                                        <ins><a href="{% url 'user-timeline' post.user.username %}" title="">{{ post.user.username }}</a></ins>
+                                                        <span>published: {{ post.date_posted|timesince }} ago</span>
+                                                    </div>
+                                                    <div class="post-meta">
+
+                                                        <div class="we-video-info">
+                                                            <ul>
+                                                                <li>
+                                                                    <span class="comment" data-toggle="tooltip" title="Comments">
+                                                                        <i class="fa fa-comments-o"></i>
+                                                                        <ins>{{ post.comments.count }}</ins>
+                                                                    </span>
+                                                                </li>
+                                                                <li>
+                                                                    <span class="like" data-toggle="tooltip" title="like">
+                                                                        <i class="ti-heart"></i>
+                                                                        <ins>2.2k</ins>
+                                                                    </span>
+                                                                </li>
+                                                                <li>
+                                                                    <span class="dislike" data-toggle="tooltip" title="dislike">
+                                                                        <i class="ti-heart-broken"></i>
+                                                                        <ins>200</ins>
+                                                                    </span>
+                                                                </li>
+                                                                <li class="social-media">
+                                                                    <div class="menu">
+                                                                        <div class="btn trigger"><i class="fa fa-share-alt"></i></div>
+                                                                        <div class="rotater">
+                                                                            <div class="btn btn-icon"><a href="#" title=""><i class="fa fa-html5"></i></a></div>
+                                                                        </div>
+                                                                        <div class="rotater">
+                                                                            <div class="btn btn-icon"><a href="#" title=""><i class="fa fa-facebook"></i></a></div>
+                                                                        </div>
+                                                                        <div class="rotater">
+                                                                            <div class="btn btn-icon"><a href="#" title=""><i class="fa fa-google-plus"></i></a></div>
+                                                                        </div>
+                                                                        <div class="rotater">
+                                                                            <div class="btn btn-icon"><a href="#" title=""><i class="fa fa-twitter"></i></a></div>
+                                                                        </div>
+                                                                        <div class="rotater">
+                                                                            <div class="btn btn-icon"><a href="#" title=""><i class="fa fa-css3"></i></a></div>
+                                                                        </div>
+                                                                        <div class="rotater">
+                                                                            <div class="btn btn-icon"><a href="#" title=""><i class="fa fa-instagram"></i></a>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="rotater">
+                                                                            <div class="btn btn-icon"><a href="#" title=""><i class="fa fa-dribbble"></i></a>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="rotater">
+                                                                            <div class="btn btn-icon"><a href="#" title=""><i class="fa fa-pinterest"></i></a>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                        <div class="description">
+                                                            <a style="color: rgba(255, 255, 255, 0.5) !important;" href="{% url 'post-detail' post.id %}">
+                                                                <p class="mb-4">
+                                                                    {{ post.content }}
+                                                                </p>
+                                                            </a>
+                                                        </div>
+                                                        <div class="col-4 d-flex flex-row-reverse no-padding align-items-center" style="padding-right: 0 !important;">
+                                                           {% if post.uer == user %}
+                                                                <a class="material-icons ml-2" style="font-size: 14px" href="{% url 'post-delete' post.id %}">clear</a>
+                                                                <a class="material-icons ml-2" style="font-size: 14px" href="{% url 'post-update' post.id %}">update</a>
+                                                            {%  endif %}
+                                                       </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div><!-- centerl meta -->
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock content %}

@@ -1,0 +1,34 @@
+{% load static %}
+<div class="col-lg-3">
+    <aside class="sidebar static">
+        <div class="widget">
+            <h4 class="widget-title">Shortcuts</h4>
+            <ul class="naves">
+                <li>
+                    <img src="{% static 'images/faq.png' %}" width="25">
+                    <a href="{% url 'user_channels:home' %}" title="">News feed</a>
+                </li>
+                <li>
+                    <img src="{% static 'images/demo/add.png' %}" width="25">
+                    <a href="{% url 'user_channels:home' %}">Create Channel</a>
+                </li>
+                <li>
+                    <img src="{% static 'images/book-icon.png' %}" width="25">
+                    <a href="#" title="">Inbox</a>
+                </li>
+                <li>
+                    <img src="{% static 'images/demo/Customize.png' %}" width="25">
+                    <a href="#" title="">Find Friends</a>
+                </li>
+                <li>
+                    <img src="{% static 'images/demo/Maximize.png' %}" width="25">
+                    <a href="#" title="">Friends</a>
+                </li>
+                <li>
+                    <img src="{% static 'images/demo/unnamed.jpg' %}" width="25">
+                    <a href="{% url 'logout' %}" title="">Logout</a>
+                </li>
+            </ul>
+        </div><!-- Shortcuts -->
+    </aside>
+</div><!-- sidebar -->

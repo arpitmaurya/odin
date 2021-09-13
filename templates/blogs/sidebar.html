@@ -1,0 +1,26 @@
+<div class="col-lg-2">
+    <aside class="sidebar static">
+        <div class="widget">
+            <h4 class="widget-title">bich, resspekt</h4>
+            <ul class="naves">
+                <li>
+
+                    <a href="#modal-example" uk-toggle>CREATE</a>
+                    {% include 'blogs/form.html' %}
+                </li>
+                <li>
+
+                    <a href="#" title="">Live Stream</a>
+                </li>
+                <li>
+
+                    <a href="{% url 'user_channels:dashboard' channel.uuid %}" title="">Dashboard</a>
+                </li>
+                <li>
+
+                    <a href="{% url 'user_channels:edit' channel.uuid %}" title="">Edit</a>
+                </li>
+            </ul>
+        </div><!-- Shortcuts -->
+    </aside>
+</div><!-- sidebar -->

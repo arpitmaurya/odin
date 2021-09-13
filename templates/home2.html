@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block content %}
+    <section>
+        <div class="gap gray-bg">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="row" id="page-contents">
+                            {% include 'includes/sidebar.html' %}
+                            <div class="col-lg-6">
+                                    {% for channel in channels %}
+                                       {{channel.channel_name}}-> {{channel.CHANNEL_TYPE}}
+                                        <a href="{% url 'user_channels:video-channel' channel.uuid %}">Go</a>
+                                    <br>
+                                    {% endfor %}
+
+                            </div><!-- centerl meta -->
+                            <div class="col-lg-3">
+                                <aside class="sidebar static">
+                                    <div class="widget friend-list stick-widget">
+                                        <h4 class="widget-title">Friends</h4>
+                                        <div id="searchDir"></div>
+                                        <ul id="people-list" class="friendz-list">
+                                            {#{% for friend in friends %}#}
+                                            {#<li>#}
+                                            {#<figure>#}
+                                            {#<img src="images/resources/friend-avatar.jpg" alt="">#}
+                                            {#<span class="status f-online"></span>#}
+                                            {#</figure>#}
+                                            {#<div class="friendz-meta">#}
+                                            {#<a href="time-line.html">{{ friend.user.username }}</a>#}
+                                            {#<i><a href="https://wpkixx.com/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="07706e6973627574686b63627547606a666e6b2964686a">[email&#160;protected]</a></i>#}
+                                            {#</div>#}
+                                            {#</li>#}
+                                            {#{% endfor %}#}
+                                        </ul>
+                                    </div><!-- friends list sidebar -->
+                                </aside>
+                            </div><!-- sidebar -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock content %}

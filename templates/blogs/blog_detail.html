@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    <section>
+        <div class="gap gray-bg">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="row" id="page-contents">
+                            <div class="col-lg-6">
+                                <div class="central-meta">
+                                    <div class="new-postbox">
+<article class="video-container">
+        {{blog.content | safe}}
+    <div class="video-bottom-section">
+      <a href="{% url 'blogs:blog-create' blog.channel.uuid %}">
+        <img class="channel-icon" src="{{blog.channel.channel_photo.url}}" />
+      </a>
+      <div class="video-details">
+        <a href="{% url 'blogs:blog-detail' blog.uuid %}" class="video-title">{{blog.name}}</a>
+        <a href="{% url 'blogs:blog-create' blog.channel.uuid %}" class="video-channel-name">{{blog.channel.channel_name}}</a>
+        <div class="video-metadata">
+          <span>12K views</span>
+          •
+          <span>1 week ago</span>
+        </div>
+      </div>
+    </div>
+</article>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" type="text/css" media="all" rel="stylesheet" />
+<link href="{{STATIC_URL}}froala_editor/css/froala_editor.min.css" type="text/css" media="all" rel="stylesheet" />
+<link href="{{STATIC_URL}}froala_editor/css/froala_style.min.css" type="text/css" media="all" rel="stylesheet" />
+<script type="text/javascript" src="{{STATIC_URL}}froala_editor/js/froala_editor.min.js"></script>
+{% endblock %}

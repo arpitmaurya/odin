@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+
+<style type="text/css">
+	.profile-image{
+		max-height: 100px;
+		max-width: 100px;
+	}
+	.profile-image{
+		border-radius: 12px;
+	}
+	.card{
+		border-radius: 12px;
+	}
+	.dropdown-toggle::after { 
+		content: none; 
+	}
+	.profile-link{
+		color: #000;
+	}
+	.material-icons{
+		font-size: 30px;
+	}
+	.material-icons:hover{
+		cursor: pointer;
+	}
+	.confirm-follow-request{
+		color: green;
+	}
+	.confirm-follow-request:hover {
+		opacity: 0.3;
+	}
+	.decline-follow-request:hover {
+		opacity: 0.3;
+	}
+	.decline-follow-request{
+		color: red;
+	}
+</style>
+
+<div class="container">
+	<div class="card p-2">
+
+		{% if follow_requests %}
+		<div class="d-flex flex-row flex-wrap">
+		{% for request in follow_requests %}
+		<div class="card flex-row flex-grow-1 p-2 mx-2 my-2 align-items-center">
+			<a class="profile-link" href="{% url 'user:view' user_id=request.sender.id %}">
+				<div class="card-image m-2">
+					<img class="img-fluid profile-image" src="{{request.sender.profile_image.url}}" alt="">
+				</div>
+			</a>
+			<a class="profile-link" href="{% url 'user:view' user_id=request.sender.id %}">
+				<div class="card-center px-2">
+					<h4 class="card-title">{{request.sender.username}}</h4>
+				</div>
+			</a>
+			<div class="d-flex flex-row card-right flex-grow-1 justify-content-end mx-2">
+	  			<span id="id_cancel_{{request.sender.id}}" class="decline-follow-request material-icons p-1" onclick='triggerDeclineFriendRequest("{{request.id}}")'>cancel</span>
+	  			<span id="id_confirm_{{request.sender.id}}" class="confirm-follow-request material-icons p-1" onclick='triggerAcceptFriendRequest("{{request.id}}")'>check</span>
+			</div>
+		</div>
+		{% if forloop.counter|divisibleby:2 %}
+		</div><div class="d-flex flex-row flex-wrap">
+		{% endif %}
+		
+		{% endfor %}
+		
+		{% else %} <!-- If no friends -->
+		<div class="d-flex flex-row flex-grow-1 justify-content-center align-items-center p-4">
+			<p>No results</p>
+		</div>
+		{% endif %}
+		</div>
+	</div>
+	
+</div>
+
+<script type="text/javascript">
+
+	function onFollowRequestAccepted(){
+		location.reload();
+	}
+
+	function onFollowRequestDeclined(){
+		location.reload();
+	}
+
+	function triggerAcceptFollowRequest(follow_request_id){
+		acceptFollowRequest(friend_request_id, onFollowRequestAccepted)
+	}
+
+	function triggerDeclineFollowRequest(follow_request_id){
+		declineFollowRequest(friend_request_id, onFollowRequestDeclined)
+	}
+</script>
+
+{% include 'follow/snippets/accept_follow_request.html' %}
+{% include 'follow/snippets/decline_follow_request.html' %}
+
+
+{% endblock content %}

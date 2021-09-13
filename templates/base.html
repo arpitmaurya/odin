@@ -1,0 +1,713 @@
+{% load static %}
+
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content=""/>
+    <meta name="keywords" content=""/>
+    <title>Gatherly Social Network Toolkit</title>
+
+    {% include 'includes/stylesheets.html' %}
+    {% csrf_token %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Modal</title>
+  <link href="styles.css" rel="stylesheet">
+  <script defer src="script.js"></script>
+  <style>
+        *, *::after, *::before {
+          box-sizing: border-box;
+        }
+
+        .modal {
+          position: fixed;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%) scale(0);
+          transition: 200ms ease-in-out;
+          border: 1px solid black;
+          border-radius: 10px;
+          z-index: 10;
+          background-color: white;
+          width: 500px;
+          max-width: 80%;
+        }
+
+        .modal.active {
+          transform: translate(-50%, -50%) scale(1);
+        }
+
+        .modal-header {
+          padding: 10px 15px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          border-bottom: 1px solid black;
+        }
+
+        .modal-header .title {
+          font-size: 1.25rem;
+          font-weight: bold;
+        }
+
+        .modal-header .close-button {
+          cursor: pointer;
+          border: none;
+          outline: none;
+          background: none;
+          font-size: 1.25rem;
+          font-weight: bold;
+        }
+
+        .modal-body {
+          padding: 10px 15px;
+        }
+
+        #overlay {
+          position: fixed;
+          opacity: 0;
+          transition: 200ms ease-in-out;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background-color: rgba(0, 0, 0, .5);
+          pointer-events: none;
+        }
+
+        #overlay.active {
+          opacity: 1;
+          pointer-events: all;
+        }
+    </style>
+    <!--Form dropdown css below--!>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+    <!-- cool css fr beauty and stuff--!>
+    <!--style>
+      html, body {
+      min-height: 100%;
+      }
+      body, div, form, input, select, textarea, p {
+      padding: 0;
+      margin: 0;
+      outline: none;
+      font-family: Roboto, Arial, sans-serif;
+      font-size: 14px;
+      color: #666;
+      line-height: 22px;
+      }
+      h1 {
+      position: absolute;
+      margin: 0;
+      font-size: 32px;
+      color: #fff;
+      z-index: 2;
+      }
+      h5 {
+      margin: 10px 0;
+      }
+      .testbox {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: inherit;
+      padding: 20px;
+      }
+      form {
+      width: 100%;
+      padding: 20px;
+      border-radius: 6px;
+      background: #fff;
+      box-shadow: 0 0 20px 0 #095484;
+      }
+      .banner {
+      position: relative;
+      height: 210px;
+      background-image: url("/uploads/media/default/0001/01/c43630149befa5c9559813f72e99bcb6bf149e62.jpeg");
+      background-size: cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      }
+      .banner::after {
+      content: "";
+      background-color: rgba(0, 0, 0, 0.5);
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      }
+      input, select, textarea {
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+      }
+      input {
+      width: calc(100% - 10px);
+      padding: 5px;
+      }
+      select {
+      width: 100%;
+      padding: 7px 0;
+      background: transparent;
+      }
+      textarea {
+      width: calc(100% - 12px);
+      padding: 5px;
+      }
+      .item:hover p, .item:hover i, .question:hover p, .question label:hover, input:hover::placeholder, a {
+      color: #095484;
+      }
+      .item input:hover, .item select:hover, .item textarea:hover {
+      border: 1px solid transparent;
+      box-shadow: 0 0 6px 0 #095484;
+      color: #095484;
+      }
+      .item {
+      position: relative;
+      margin: 10px 0;
+      }
+      input[type="date"]::-webkit-inner-spin-button {
+      display: none;
+      }
+      .item i, input[type="date"]::-webkit-calendar-picker-indicator {
+      position: absolute;
+      font-size: 20px;
+      color: #a9a9a9;
+      }
+      .item i {
+      right: 2%;
+      top: 30px;
+      z-index: 1;
+      }
+      [type="date"]::-webkit-calendar-picker-indicator {
+      right: 1%;
+      z-index: 2;
+      opacity: 0;
+      cursor: pointer;
+      }
+      input[type=radio], input[type=checkbox]  {
+      display: none;
+      }
+      label.radio, label.check {
+      position: relative;
+      display: inline-block;
+      margin: 5px 20px 15px 0;
+      cursor: pointer;
+      }
+      .question span {
+      margin-left: 30px;
+      }
+      span.required {
+      margin-left: 0;
+      color: red;
+      }
+      .checkbox-item label {
+      margin: 5px 20px 10px 0;
+      }
+      label.radio:before, label.check:before {
+      content: "";
+      position: absolute;
+      left: 0;
+      }
+      label.radio:before {
+      width: 17px;
+      height: 17px;
+      border-radius: 50%;
+      border: 2px solid #095484;
+      }
+      label.check:before {
+      top: 2px;
+      width: 16px;
+      height: 16px;
+      border-radius: 2px;
+      border: 1px solid #095484;
+      }
+      input[type=checkbox]:checked + .check:before {
+      background: #095484;
+      }
+      label.radio:after {
+      left: 5px;
+      border: 3px solid #095484;
+      }
+      label.check:after {
+      left: 4px;
+      border: 3px solid #fff;
+      }
+      label.radio:after, label.check:after {
+      content: "";
+      position: absolute;
+      top: 6px;
+      width: 8px;
+      height: 4px;
+      background: transparent;
+      border-top: none;
+      border-right: none;
+      transform: rotate(-45deg);
+      opacity: 0;
+      }
+      input[type=radio]:checked + label:after, input[type=checkbox]:checked + label:after {
+      opacity: 1;
+      }
+      .btn-block {
+      margin-top: 10px;
+      text-align: center;
+      }
+      button {
+      width: 150px;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      background: #095484;
+      font-size: 16px;
+      color: #fff;
+      cursor: pointer;
+      }
+      button:hover {
+      background: #0666a3;
+      }
+      @media (min-width: 568px) {
+      .city-item {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      }
+      .city-item input {
+      width: calc(50% - 20px);
+      }
+      .city-item select {
+      width: calc(50% - 8px);
+      }
+      }
+    </style--!>
+    <style>
+        .drop-zone {
+          max-width: 250px;
+          height: 145px;
+          padding: 25px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          text-align: center;
+          font-family: "Quicksand", sans-serif;
+          font-weight: 500;
+          font-size: 20px;
+          cursor: pointer;
+          color: #cccccc;
+          border: 4px dashed #009578;
+          border-radius: 10px;
+        }
+
+        .drop-zone--over {
+          border-style: solid;
+        }
+
+        .drop-zone__input {
+          display: none;
+        }
+
+        .drop-zone__thumb {
+          width: 100%;
+          height: 100%;
+          border-radius: 10px;
+          overflow: hidden;
+          background-color: #cccccc;
+          background-size: cover;
+          position: relative;
+        }
+
+        .drop-zone__thumb::after {
+          content: attr(data-label);
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          width: 100%;
+          padding: 5px 0;
+          color: #ffffff;
+          background: rgba(0, 0, 0, 0.75);
+          font-size: 14px;
+          text-align: center;
+        }
+    </style>
+
+    <!-- fr channel utube style video arrangements --!>
+    <style>
+
+        *, *::before, *::after {
+          box-sizing: border-box;
+          font-family: Roboto, Arial, Helvetica, sans-serif;
+        }
+
+        body {
+          margin: 0;
+        }
+
+        .video-section {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+          gap: 3rem 1rem;
+          padding: 3rem 0;
+          margin: 0 1.5rem;
+          border-top: 4px solid #CCC;
+        }
+
+        .video-section:first-child {
+          border-top: none;
+        }
+
+        .video-container {
+          display: flex;
+          flex-direction: column;
+        }
+
+        .thumbnail {
+          position: relative;
+          display: flex;
+        }
+
+        .thumbnail::before {
+          content: attr(data-duration);
+          position: absolute;
+          background-color: rgba(0, 0, 0, .85);
+          color: white;
+          right: 5px;
+          bottom: 5px;
+          padding: .1em .3em;
+          border-radius: .3em;
+          font-size: .9rem;
+        }
+
+        .thumbnail-image {
+          width: 100%;
+          height: 100%;
+          min-width: 250px;
+          min-height: 150px;
+          background-color: #AAA;
+        }
+
+        .video-bottom-section {
+          display: flex;
+          align-items: flex-start;
+          margin-top: 1rem;
+        }
+
+        .channel-icon {
+          margin-right: .75rem;
+          border-radius: 50%;
+          width: 36px;
+          height: 36px;
+          background-color: #AAA;
+        }
+
+        .video-details {
+          display: flex;
+          flex-direction: column;
+        }
+
+        .video-title {
+          font-size: 1.1rem;
+          font-weight: bold;
+          margin-bottom: .5rem;
+          text-decoration: none;
+          color: black;
+        }
+
+        .video-channel-name {
+          margin-bottom: .1rem;
+          text-decoration: none;
+          transition: color 150ms;
+        }
+
+        .video-channel-name:hover {
+          color: #111;
+        }
+
+        .video-channel-name,
+        .video-metadata {
+          color: #555;
+        }
+
+        .video-section-title {
+          grid-column: 1 / -1;
+          margin: -.5rem 0;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 0 .5rem;
+        }
+
+        .video-section-title-close {
+          border: none;
+          background: none;
+          padding: 0;
+          font-size: 2rem;
+          color: #555;
+          cursor: pointer;
+        }
+
+        .videos {
+          background-color: #F9F9F9;
+        }
+
+        .categories {
+          padding: 1rem 2rem;
+          border-top: 1px solid #999;
+          border-bottom: 1px solid #999;
+        }
+
+        .category-section {
+          display: flex;
+          overflow: hidden;
+        }
+
+        .category {
+          margin-right: 1rem;
+          word-wrap: none;
+          white-space: nowrap;
+          border: 1px solid #CCC;
+          border-radius: 900px;
+          background-color: #E7E7E7;
+          padding: .5rem 1rem;
+          font-size: inherit;
+          cursor: pointer;
+          transition: background-color 150ms;
+        }
+
+        .category:hover {
+          background-color: #DDD;
+        }
+
+        .category.active {
+          background-color: #606060;
+          color: white;
+          border-color: #EEE;
+        }
+
+        .category:last-child {
+          margin-right: 0;
+        }
+
+        .header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 1rem;
+        }
+
+        .youtube-logo {
+          height: 20px;
+        }
+
+        .search-bar {
+          display: flex;
+          flex-grow: 1;
+          margin: 0 2rem 0 4rem;
+        }
+
+        .search-input {
+          width: 100%;
+          font-size: inherit;
+          padding: .4em;
+          border: 1px solid #777;
+          border-top-right-radius: 0;
+          border-bottom-right-radius: 0;
+        }
+
+        .search-btn {
+          display: flex;
+          align-items: center;
+          padding: 0 1.25rem;
+          border: 1px solid #777;
+          background-color: #F8F8F8;
+          border-left: none;
+          border-top-left-radius: 0;
+          border-bottom-left-radius: 0;
+          cursor: pointer;
+        }
+
+        .search-btn:hover {
+          background-color: #F0F0F0;
+        }
+
+        .menu-icons {
+          display: grid;
+          grid-template-columns: repeat(4, auto);
+          align-items: center;
+          gap: 1.5rem;
+        }
+
+        .menu-channel-icon {
+          border-radius: 50%;
+          width: 36px;
+          height: 36px;
+          background-color: #AAA;
+        }
+
+    </style>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+
+
+
+</head>
+<body>
+<div class="theme-layout">
+
+    <div class="topbar stick">
+        <div class="logo">
+            <div class="user-img">
+                <a title="" href="/"><img src="{% static 'images/demo/unnamed.jpg' %}" width="35"></a>
+            </div>
+        </div>
+
+        <div class="top-area">
+            <div class="top-search">
+                <form method="post" class="">
+                    <input type="text" placeholder="Search Friend">
+                    <button data-ripple><i class="ti-search"></i></button>
+                </form>
+            </div>
+            <ul class="setting-area">
+                <li><a href="{% url 'post-create' %}" title="Home" data-ripple=""><img src="{% static 'images/demo/Home.png' %}" width="25"></a></li>
+                <li><a href="#" class="link"><img src="{% static 'images/demo/Message.png' %}" width="25"></a></li>
+                <li>
+                    <a href="#" title="Notification" data-ripple="">
+                        <img src="{% static 'images/demo/Notification.png' %}" width="25"><span id="total-friend-notifications"></span>
+                    </a>
+                    <div class="dropdowns">
+                        <ul class="drops-menu" id="friend-menu">
+                        </ul>
+                        <a href="#" title="" class="more-mesg">view more</a>
+                    </div>
+                </li>
+                <li>
+                    <a href="#" title="Messages" data-ripple=""><img src="{% static 'images/demo/Message-1.png' %}" width="25"><span id="total-like-comment-notifications">0</span></a>
+                    <div class="dropdowns">
+                        <ul class="drops-menu" id="like-comment-menu">
+                        </ul>
+                        <a href="#" title="" class="more-mesg">view more</a>
+                        <a href="#" title="" class="more-mesg" data-url="#" id="mark-like-comment-notifications-as-read">mark all as read</a>
+                    </div>
+                </li>
+                <li>
+                    <a><img src="{% static 'images/demo/settings.png' %}" width="25"></a>
+                </li>
+            </ul>
+            <div class="user-img">
+                <img src="{{ request.user.photo.url }}" width="55">
+                <span class="status f-online"></span>
+                <div class="user-setting">
+                    <a href="#" title=""><span class="status f-online"></span>online</a>
+                    <a href="#" title=""><span class="status f-away"></span>away</a>
+                    <a href="#" title=""><span class="status f-off"></span>offline</a>
+                    <a href="#" title=""><i class="ti-user"></i> view profile</a>
+                    <a href="#" title=""><i class="ti-pencil-alt"></i>edit profile</a>
+                    <a href="#" title=""><i class="ti-target"></i>activity log</a>
+                    <a href="#" title=""><i class="ti-settings"></i>account setting</a>
+                    <a href="{% url 'logout' %}" title=""><i class="ti-power-off"></i>log out</a>
+                </div>
+            </div>
+
+        </div>
+    </div><!-- topbar -->
+
+    {% block content %}{% endblock content %}
+
+{% include 'includes/scripts.html' %}
+{% block scripts %}{% endblock scripts %}
+
+</body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    const openModalButtons = document.querySelectorAll('[data-modal-target]')
+    const closeModalButtons = document.querySelectorAll('[data-close-button]')
+    const overlay = document.getElementById('overlay')
+
+    openModalButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const modal = document.querySelector(button.dataset.modalTarget)
+        openModal(modal)
+      })
+    })
+
+    overlay.addEventListener('click', () => {
+      const modals = document.querySelectorAll('.modal.active')
+      modals.forEach(modal => {
+        closeModal(modal)
+      })
+    })
+
+    closeModalButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const modal = button.closest('.modal')
+        closeModal(modal)
+      })
+    })
+
+    function openModal(modal) {
+      if (modal == null) return
+      modal.classList.add('active')
+      overlay.classList.add('active')
+    }
+
+    function closeModal(modal) {
+      if (modal == null) return
+      modal.classList.remove('active')
+      overlay.classList.remove('active')
+    }
+</script>
+
+
+</html>

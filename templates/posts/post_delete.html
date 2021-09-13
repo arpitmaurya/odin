@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <form method="POST" class="col-6 no-padding">
+        {% csrf_token %}
+        <fieldset class="form-group white-important">
+            Do you really want to delete
+        </fieldset>
+        <p class="bg-steel p-2"
+           style="border: 1px solid white; border-radius: 4px; word-wrap: break-word;">
+           {{ post.content }}
+            {% for f in post.postfiles_set.all %}
+                <img src="{{ f.files.url }}" class="uk-align-center" width="250">
+            {% endfor %}
+        </p>
+        <img src="{{ post.file.url }}">
+        <div class="form-group">
+            <button class="btn btn-outline-primary" type="submit">Yes</button>
+        </div>
+    </form>
+</div>
+{% endblock content %}

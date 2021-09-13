@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body{
+          background:lightblue;
+          display:flex;
+          flex-flow:wrap column;
+          justify-content:center;
+          align-content:center;
+          text-align:center;
+          margin:10% auto;
+          overflow:hidden;
+          max-width:50%;
+          max-height:50%;
+        }
+        textarea {
+          border: 0 none;
+          overflow: hidden; /*overflow is set to auto at max height using JS */
+          background:lightcyan;
+          font-family:sans-serif;
+          outline: none;
+          min-height:100px;
+          max-height:314px;
+          height: auto;
+          resize: none;
+          background: none repeat scroll 0 0 #FFFFFF;
+          float: none;
+          margin: 0 auto;
+          position: relative;
+          z-index: 1;
+          width: 750px;
+          -webkit-box-shadow: 0 0 6px #747474;
+          -moz-box-shadow: 0 0 6px #747474;
+          -ms-box-shadow: 0 0 6px #747474;
+          -o-box-shadow: 0 0 6px #747474;
+          box-shadow: 0 0 6px #747474;
+        }
+        h1{
+          font-family:sans-serif;
+          font-size:150%;
+          font-weight:600;
+          clear:both;
+        }
+        h3{
+          font-family:sans-serif;
+          font-size:90%;
+          font-weight:400;
+          clear:both;
+          text-align:left;
+          margin: 10px auto;
+        }
+    </style>
+    <style>
+        .drop-zone {
+          max-width: 200px;
+          height: 200px;
+          padding: 25px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          text-align: center;
+          font-family: "Quicksand", sans-serif;
+          font-weight: 500;
+          font-size: 20px;
+          cursor: pointer;
+          color: #cccccc;
+          border: 4px dashed #009578;
+          border-radius: 10px;
+        }
+
+        .drop-zone--over {
+          border-style: solid;
+        }
+
+        .drop-zone__input {
+          display: none;
+        }
+
+        .drop-zone__thumb {
+          width: 100%;
+          height: 100%;
+          border-radius: 10px;
+          overflow: hidden;
+          background-color: #cccccc;
+          background-size: cover;
+          position: relative;
+        }
+
+        .drop-zone__thumb::after {
+          content: attr(data-label);
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          width: 100%;
+          padding: 5px 0;
+          color: #ffffff;
+          background: rgba(0, 0, 0, 0.75);
+          font-size: 14px;
+          text-align: center;
+        }
+    </style>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8">
+  <link rel="shortcut icon" href="/assets/favicon.ico">
+  <link rel="stylesheet" href="./src/main.css">
+
+</head>
+<body>
+
+    <h1>Auto Resizing Textarea with max-height</h1>
+    <div id="contact-form">
+      <textarea rows="1" id="message" placeholder="Enter text"></textarea>
+    </div>
+
+    <h1>File Upload Shit</h1>
+    <div class="drop-zone">
+        <span class="drop-zone__prompt">Drop file here or click to upload</span>
+        <input type="file" name="myFile" class="drop-zone__input">
+    </div>
+
+
+    <script src="./src/main.js"></script>
+    <script src="/scripts/snippet-javascript-console.min.js?v=1"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        $('#contact-form').on( 'change keydown keyup paste cut', 'textarea', function () {
+          $(this).height(0).height(this.scrollHeight+2);
+          if ($(this).height() >= 300) {
+            $('textarea#message').css("overflow", "auto");
+          }
+          else {
+            $('textarea#message').css("overflow", "hidden");
+          }
+        }).find('textarea#message').change();
+    </script>
+    <script>
+      document.querySelectorAll(".drop-zone__input").forEach((inputElement) => {
+          const dropZoneElement = inputElement.closest(".drop-zone");
+
+          dropZoneElement.addEventListener("click", (e) => {
+            inputElement.click();
+          });
+
+          inputElement.addEventListener("change", (e) => {
+            if (inputElement.files.length) {
+              updateThumbnail(dropZoneElement, inputElement.files[0]);
+            }
+          });
+
+          dropZoneElement.addEventListener("dragover", (e) => {
+            e.preventDefault();
+            dropZoneElement.classList.add("drop-zone--over");
+          });
+
+          ["dragleave", "dragend"].forEach((type) => {
+            dropZoneElement.addEventListener(type, (e) => {
+              dropZoneElement.classList.remove("drop-zone--over");
+            });
+          });
+
+          dropZoneElement.addEventListener("drop", (e) => {
+            e.preventDefault();
+
+            if (e.dataTransfer.files.length) {
+              inputElement.files = e.dataTransfer.files;
+              updateThumbnail(dropZoneElement, e.dataTransfer.files[0]);
+            }
+
+            dropZoneElement.classList.remove("drop-zone--over");
+          });
+      });
+
+        /**
+         * Updates the thumbnail on a drop zone element.
+         *
+         * @param {HTMLElement} dropZoneElement
+         * @param {File} file
+         */
+        function updateThumbnail(dropZoneElement, file) {
+          let thumbnailElement = dropZoneElement.querySelector(".drop-zone__thumb");
+
+          // First time - remove the prompt
+          if (dropZoneElement.querySelector(".drop-zone__prompt")) {
+            dropZoneElement.querySelector(".drop-zone__prompt").remove();
+          }
+
+          // First time - there is no thumbnail element, so lets create it
+          if (!thumbnailElement) {
+            thumbnailElement = document.createElement("div");
+            thumbnailElement.classList.add("drop-zone__thumb");
+            dropZoneElement.appendChild(thumbnailElement);
+          }
+
+          thumbnailElement.dataset.label = file.name;
+
+          // Show thumbnail for image files
+          if (file.type.startsWith("image/")) {
+            const reader = new FileReader();
+
+            reader.readAsDataURL(file);
+            reader.onload = () => {
+              thumbnailElement.style.backgroundImage = `url('${reader.result}')`;
+            };
+          } else {
+            thumbnailElement.style.backgroundImage = null;
+          }
+        }
+
+    </script>
+</body>
+</html>

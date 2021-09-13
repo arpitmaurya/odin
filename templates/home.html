@@ -1,0 +1,237 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block content %}
+    <section>
+        <div class="gap gray-bg">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="row" id="page-contents">
+                            {% include 'includes/sidebar.html' %}
+                            <div class="col-lg-6">
+                                {% if channels %}
+                                    <div class="topbar stick">
+                                        <div class="top-area">
+                                            <ul class="setting-area">
+                                                {% for channel in channels %}
+                                                    {% if channel.CHANNEL_TYPE == 'V' %}
+                                                        <a href="{% url 'user_channels:video-channel' channel.uuid %}">
+                                                            <img src="{{ channel.channel_photo.url }}" width="45">
+                                                        </a>
+                                                    {% elif channel.CHANNEL_TYPE == 'A' %}
+                                                        <a href="{% url 'blogs:blog-create' channel.uuid %}">
+                                                            <img src="{{ channel.channel_photo.url }}" width="45">
+                                                        </a>
+                                                    {% endif %}
+                                                    {{channel.channel_name}}
+                                                    <a href="{% url 'user_channels:delete' channel.uuid %}">Delete</a>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                                    <br><br>
+                                <div class="central-meta">
+                                    <div class="new-postbox">
+                                        <figure>
+                                            <img src="{{ request.user.photo.url }}" alt="">
+                                        </figure>
+                                        <div class="newpst-input">
+                                            <form method="post" action="{% url 'post-create' %}" enctype="multipart/form-data">
+                                                {% csrf_token %}
+                                                <div id="contact-form">
+                                                    <textarea name="content" placeholder="Write something"></textarea>
+                                                </div>
+                                                <div class="attachments">
+                                                    <ul>
+                                                        <li>
+                                                            <i><img src="{% static 'images/demo/List.png' %}" width="30"></i>
+                                                            <label class="fileContainer">
+                                                                <input type="file" name="postfiles__files" prefix="audio" multiple>
+                                                            </label>
+                                                        </li>
+                                                        <li>
+                                                            <img src="{% static 'images/demo/Image.png' %}" width="30">
+                                                            <label class="fileContainer">
+                                                                <input type="file" name="postfiles__files" prefix="image" multiple>
+                                                            </label>
+                                                        </li>
+                                                        <li>
+                                                            <img src="{% static 'images/demo/video.png' %}" width="30">
+                                                            <label class="fileContainer">
+                                                                <input type="file" name="postfiles__files" prefix="video">
+                                                            </label>
+                                                        </li>
+                                                        <li>
+                                                            <img src="{% static 'images/demo/camera.png' %}" width="30">
+                                                            <label class="fileContainer">
+                                                                <input type="file" name="postfiles__files" prefix="photo">
+                                                            </label>
+                                                        </li>
+                                                        <li>
+                                                            <button class="btn btn-danger" type="submit">Post</button>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div><!-- add post new box -->
+                                <div class="loadMore">
+                                    {% for post in posts %}
+                                        <div class="central-meta item">
+                                            <div class="user-post">
+                                                <div class="friend-info">
+                                                    <figure>
+                                                        {% if post.user.photo.url %}
+                                                            <img src="{{ post.user.photo.url }}" alt="">
+                                                        {% else %}
+                                                            <img src="{% static 'images/default.jpg' %}" alt="">
+                                                        {% endif %}
+                                                    </figure>
+                                                    <div class="friend-name">
+                                                        <ins><a href="{% url 'user-timeline' user.username %}" title="">{{ user.username }}</a></ins>
+                                                        <span>published: {{ post.date_posted|timesince }} ago</span>
+                                                    </div>
+                                                    <div class="post-meta">
+                                                        <div class="description">
+                                                            <a style="color: rgba(255, 255, 255, 0.5) !important;" href="{% url 'post-detail' post.id %}">
+                                                                <p class="mb-4">
+                                                                    {{ post.content }}
+                                                                </p>
+                                                                {% for f in post.postfiles_set.all %}
+                                                                    <img src="{{ f.files.url }}" class="uk-align-center" width="250">
+                                                                {% endfor %}
+                                                            </a>
+                                                        </div>
+                                                        <div class="we-video-info">
+                                                            <ul>
+                                                                <li>
+                                                                    <span class="comment" data-toggle="tooltip" title="Comments">
+                                                                        <img src="{% static 'images/demo/Message.png' %}" width="20">
+                                                                        {% if post.comments %}
+                                                                            <ins>{{ post.comments.count }}</ins>
+                                                                        {% endif %}
+                                                                    </span>
+                                                                </li>
+                                                                <li>
+                                                                    <span class="like" data-toggle="tooltip" title="like">
+                                                                        <img src="{% static 'images/demo/Like.png' %}" width="20">
+                                                                        {% if post.likes %}
+                                                                            <ins>{{ post.likes.count }}</ins>
+                                                                        {% endif %}
+                                                                    </span>
+                                                                </li>
+                                                                <li>
+                                                                    <span class="dislike" data-toggle="tooltip" title="dislike">
+                                                                        <img src="{% static 'images/demo/GIF.png' %}" width="20">
+                                                                        {% if post.dislikes %}
+                                                                            <ins>{{ post.dislikes.count }}</ins>
+                                                                        {% endif %}
+                                                                    </span>
+                                                                </li>
+                                                                <li class="social-media">
+                                                                    <div class="menu">
+                                                                        <div class="btn trigger"><img src="{% static 'images/demo/asset.png' %}"></div>
+                                                                        <div class="rotater">
+                                                                            <div class="btn btn-icon"><a href="#" title=""><i class="fa fa-html5"></i></a></div>
+                                                                        </div>
+                                                                        <div class="rotater">
+                                                                            <div class="btn btn-icon"><a href="#" title=""><i class="fa fa-facebook"></i></a></div>
+                                                                        </div>
+                                                                        <div class="rotater">
+                                                                            <div class="btn btn-icon"><a href="#" title=""><i class="fa fa-google-plus"></i></a></div>
+                                                                        </div>
+                                                                        <div class="rotater">
+                                                                            <div class="btn btn-icon"><a href="#" title=""><i class="fa fa-twitter"></i></a></div>
+                                                                        </div>
+                                                                        <div class="rotater">
+                                                                            <div class="btn btn-icon"><a href="#" title=""><i class="fa fa-css3"></i></a></div>
+                                                                        </div>
+                                                                        <div class="rotater">
+                                                                            <div class="btn btn-icon"><a href="#" title=""><i class="fa fa-instagram"></i></a>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="rotater">
+                                                                            <div class="btn btn-icon"><a href="#" title=""><i class="fa fa-dribbble"></i></a>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="rotater">
+                                                                            <div class="btn btn-icon"><a href="#" title=""><i class="fa fa-pinterest"></i></a>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </li>
+                                                                <div class="align-right">
+                                                                    <li>
+                                                                       {% if post.user == user %}
+                                                                            <a class="material-icons ml-2" style="font-size: 14px" href="{% url 'post-update' post.id %}">
+                                                                                <img src="{% static 'images/demo/More.png' %}" width="20">
+                                                                            </a>
+                                                                       {%  endif %}
+                                                                    </li>
+                                                                    <li>
+                                                                       {% if post.user == user %}
+                                                                            <a class="material-icons ml-2" style="font-size: 14px" href="{% url 'post-delete' post.id %}">
+                                                                                <img src="{% static 'images/demo/Link.png' %}" width="20">
+                                                                            </a>
+                                                                       {%  endif %}
+                                                                    </li>
+                                                                </div>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div><!-- centerl meta -->
+                            <div class="col-lg-3">
+                                <aside class="sidebar static">
+                                    <div class="widget friend-list stick-widget">
+                                        <h4 class="widget-title">Friends</h4>
+                                        <div id="searchDir"></div>
+                                        <ul id="people-list" class="friendz-list">
+                                            {#{% for friend in friends %}#}
+                                            {#<li>#}
+                                            {#<figure>#}
+                                            {#<img src="images/resources/friend-avatar.jpg" alt="">#}
+                                            {#<span class="status f-online"></span>#}
+                                            {#</figure>#}
+                                            {#<div class="friendz-meta">#}
+                                            {#<a href="time-line.html">{{ friend.user.username }}</a>#}
+                                            {#<i><a href="https://wpkixx.com/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="07706e6973627574686b63627547606a666e6b2964686a">[email&#160;protected]</a></i>#}
+                                            {#</div>#}
+                                            {#</li>#}
+                                            {#{% endfor %}#}
+                                        </ul>
+                                    </div><!-- friends list sidebar -->
+                                </aside>
+                            </div><!-- sidebar -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+<script src="./src/main.js"></script>
+<script src="/scripts/snippet-javascript-console.min.js?v=1"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript">
+    $('#contact-form').on( 'change keydown keyup paste cut', 'textarea', function () {
+      $(this).height(0).height(this.scrollHeight+2);
+      if ($(this).height() >= 300) {
+        $('textarea#message').css("overflow", "auto");
+      }
+      else {
+        $('textarea#message').css("overflow", "hidden");
+      }
+    }).find('textarea#message').change();
+</script>
+{% endblock content %}

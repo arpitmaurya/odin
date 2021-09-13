@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<!-- Created By CodingNepal - www.codingnepalweb.com -->
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Get User Location in JavaScript | CodingNepal</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+        *{
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+          font-family: 'Poppins', sans-serif;
+        }
+        body{
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          min-height: 100vh;
+          background: linear-gradient(#252930 50%, #5372F0 50%);
+        }
+        ::selection{
+          color: #fff;
+          background: #5372F0;
+        }
+        button{
+          border: none;
+          outline: none;
+          font-size: 50px;
+          color: #5372F0;
+          padding: 23px 44px;
+          border-radius: 10px;
+          cursor: pointer;
+          font-weight: 500;
+          background: #fff;
+          box-shadow: 0 0 20px 0 rgba(0,0,0,0.1);
+        }
+    </style>
+  </head>
+  <body>
+    <button>Detect your location</button>
+    <script>
+        const button = document.querySelector("button");
+
+        button.addEventListener("click", ()=>{
+            if(navigator.geolocation){
+                button.innerText = "Allow to detect location";
+                navigator.geolocation.getCurrentPosition(onSuccess, onError);
+            }else{
+                button.innerText = "Your browser not support";
+            }
+        });
+
+        function onSuccess(position){
+            button.innerText = "Detecting your location...";
+            let {latitude, longitude} = position.coords;
+            fetch(`https://api.opencagedata.com/geocode/v1/json?q=${latitude}+${longitude}&key=YOUR_API_KEY`)
+            .then(response => response.json()).then(response =>{
+                let allDetails = response.results[0].components;
+                console.table(allDetails);
+                let {county, postcode, country} = allDetails;
+                button.innerText = `${county} ${postcode}, ${country}`;
+            }).catch(()=>{
+                button.innerText = "Something went wrong";
+            });
+        }
+
+        function onError(error){
+            if(error.code == 1){
+                button.innerText = "You denied the request";
+            }else if(error.code == 2){
+                button.innerText = "Location is unavailable";
+            }else{
+                button.innerText = "Something went wrong";
+            }
+            button.setAttribute("disabled", "true");
+        }
+    </script>
+  </body>
+</html>
